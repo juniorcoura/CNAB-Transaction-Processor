@@ -22,8 +22,13 @@ public class CNABController {
         this.cnabService = cnabService;
     }
 
+    /*
+     * A anotação @CrossOrigin (CORS) é utilizada para permitir que o frontend da aplicação,
+     * rodando em um domínio diferente, possa fazer requisições
+     * para este endpoint.
+     */
     @PostMapping("/upload")
-    @CrossOrigin(origins = {"http://localhost:9090"})
+    @CrossOrigin(origins = {"http://localhost:9090"}) 
     public String upload(@RequestParam("file") MultipartFile file ) throws Exception {
 
         cnabService.uploadCnabFile(file);

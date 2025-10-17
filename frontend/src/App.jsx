@@ -62,6 +62,12 @@ function App() {
 
      <div>
       <h2 className="text-3xl font-bold mb-6 text-black">Transações</h2>
+      <button 
+        onClick={fetchTransactions}
+        className="bg-blue-500 text-white font-bold py-1 px-3 rounded hover:bg-blue-600 text-sm"
+      >
+        Atualizar Lista
+      </button>
       <ul className=" space-y-10">
         {transactions.map((report, reportIndex) => (
         <li key={reportIndex} className='"overflow-x-auto bg-white rounded-lg shadow-sm'>

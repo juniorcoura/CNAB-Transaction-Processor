@@ -35,12 +35,18 @@ public class CnabService {
         }
     }
 
+    /*
+     * Gerencia o upload de um arquivo CNAB e inicia o Job 
+     */
     public void uploadCnabFile(MultipartFile file) throws Exception{ 
+        
         String fileName = StringUtils.cleanPath(file.getOriginalFilename()); 
         Path targetLocation = fileStorageLocation.resolve(fileName); 
         file.transferTo(targetLocation); 
 
         var jobParameters = new JobParametersBuilder() 
+        // Adiciona o nome original do arquivo como um parâmetro de identificação, garantindo
+        // a unicidade do arquivo.
         .addJobParameter("cnab", file.getOriginalFilename(), String.class, true) 
         .addJobParameter("cnabFile", "file:"+ targetLocation.toString(), String.class, false) 
         .toJobParameters(); 

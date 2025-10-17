@@ -24,9 +24,14 @@ public class TransacaoController {
         this.transacaoService = transacaoService;
     }
 
+    /*
+     * A anotação @CrossOrigin (CORS) é utilizada para permitir que o frontend da aplicação,
+     * rodando em um domínio diferente, possa fazer requisições
+     * para este endpoint.
+     */
     @GetMapping("")
-    @CrossOrigin(origins = {"http://localhost:9090"})
-    List<TransacaoReport> listAll (){
+    @CrossOrigin(origins = {"http://localhost:9090"}) 
+        List<TransacaoReport> listAll (){
         return transacaoService.listTotaisTransacoesPorNomeDaLoja();
     }
 }

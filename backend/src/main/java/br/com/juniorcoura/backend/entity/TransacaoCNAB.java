@@ -2,6 +2,9 @@ package br.com.juniorcoura.backend.entity;
 
 import java.math.BigDecimal;
 
+/*
+ * Representa uma entidade imutável.
+ */
 public record TransacaoCNAB(
     Integer tipo,
     String data,
