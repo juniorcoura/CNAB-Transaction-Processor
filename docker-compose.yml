@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  #Serviço do Banco de Dados(MySQL)
+  db:
+    image: mysql/mysql-server
+    container_name: my-mysql
+    restart: always
+    environment: 
+      - MYSQL_ROOT_PASSWORD=springstudent #Senha de root do MySQL
+      - MYSQL_DATABASE=transacoes #Nome do banco de dados que será criado
+      - MYSQL_USER=springstudent #Nome de Usuário
+      - MYSQL_PASSWORD=springstudent
+    # Mapeia a porta 3306 do contêiner para a 3306 da máquina
+    # Formato: <porta_host>:<porta_container>
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./transacoes.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      #start_period: 30s
+
+  # Serviço da Aplicação (Spring Boot)
+  spring-app:
+    build:
+      context: ./backend
+    image: backend-pagnet:latest
+    ports:
+      - "8080:8080"
+    environment:
+    # Configurações para a aplicação Spring se conectar ao banco
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/transacoes
+      MYSQL_USER: springstudent
+      MYSQL_PASSWORD: springstudent
+    depends_on:
+      db:
+        condition: service_healthy
+      
+
+
+  # Serviço do Frontend
+  spa-app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - spring-app
